@@ -13,13 +13,19 @@ ssid, key = "Pico_Castor", "Pollux22"
 logger = Logger(mcp)
 
 
+def list_files():
+    d = {}
+    for file in os.listdir():
+        d[file] = {"size": os.stat(file)[6]}
+
+    return d
 
 # Enclenchement du réseau
 def create_network():
 
     # Initialisation du réseau
     wlan = network.WLAN(network.AP_IF)
-    wlan.config(essid=ssid, password=password)
+    wlan.config(essid=ssid, password=key)
     wlan.active(True)
 
     # On bloque tant que le réseau wifi n'est pas actif
@@ -102,7 +108,7 @@ async def serveAPI(reader, writer):
     # Liste des fichiers csv
     elif request.find('/listfiles') == 6:
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-        writer.write(json.dumps({"files": os.listdir()}))
+        writer.write(json.dumps({"files": list_files()}))
     
     # Supression fichier
     elif request.find("/deletefile") == 6:
@@ -138,6 +144,11 @@ async def serveAPI(reader, writer):
         writer.write(json.dumps({"working": logger.working()}))
 
     # Si le client tente une requête dont l'adresse n'existe pas, on renvoie l'erreur 404
+
+    elif request.find("/self") == 6:
+        writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
+        writer.write(json.dumps({"name": "Pico_Castor"}))
+
     else:
         writer.write('HTTP/1.0 404 Not Found\r\nContent-type: application/json\r\n\r\n')
 
