@@ -143,12 +143,12 @@ async def serveAPI(reader, writer):
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
         writer.write(json.dumps({"working": logger.working()}))
 
-    # Si le client tente une requête dont l'adresse n'existe pas, on renvoie l'erreur 404
-
+    #Obtient l'identité du pico. Cela permet au logiciel technicien de vérifier si l'appareil auquel il est connecté est bien un pico.
     elif request.find("/self") == 6:
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-        writer.write(json.dumps({"name": "Pico_Castor"}))
+        writer.write(json.dumps({"name": ssid}))
 
+    # Si le client tente une requête dont l'adresse n'existe pas, on renvoie l'erreur 404
     else:
         writer.write('HTTP/1.0 404 Not Found\r\nContent-type: application/json\r\n\r\n')
 

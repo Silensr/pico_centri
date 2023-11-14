@@ -44,6 +44,10 @@ Met à jour le module RTC du pico. Les champs nécessaires sont:
 
 On peut aussi paramétrer les microsecondes, mais étant donné qu'il n'est pas nécessaire d'avoir une telle précision, elles sont paramétrées à 0 par défaut afin de ne pas se compliquer la tâche.
 
+#### Identité
+##### /self
+Renvoie le nom du module pico. 
+
 #### Processus
 
 ##### /begin
