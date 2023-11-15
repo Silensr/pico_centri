@@ -30,7 +30,11 @@ Cette section détaille les différents points d'entrées du serveur :
 
 #### Horodatage
 
-##### /time
+##### /gettime
+
+Renvoie l'heure et la date du module RTC du pico.
+
+##### /settime
 
 Met à jour le module RTC du pico. Les champs nécessaires sont:
 
@@ -89,7 +93,3 @@ Supprime un fichier du pico. Le nom du fichier doit être passé via l'argument 
 ##### /retrieve 
 
 Renvoie les informations contenues dans le fichier utilisées pour l'acquisition.
-
-##### /gettime
-
-Renvoie l'heure et la date du module RTC du pico.

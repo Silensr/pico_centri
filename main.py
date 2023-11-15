@@ -11,6 +11,13 @@ ssid, key = "Pico_Castor", "Pollux22"
 
 logger = Logger(mcp)
 
+def parse_json(raw: str) -> dict:
+    j = ('{' + raw.split('{')[1].split('}')[0] + '}')\
+        .replace('\\n', '')\
+        .rstrip()\
+        .replace(' ', '')
+
+    return json.loads(j)
 
 def list_files():
     d = {}
@@ -46,8 +53,9 @@ async def serveAPI(reader, writer):
     request = str(request_line)
 
     # Ajustage du temps
-    if request.find("/time") == 6:
-        data = json.loads('{' + request.split('{')[1].split('}')[0] + '}')
+    if request.find("/settime") == 6:
+        
+        data = parse_json(request_line)
         
         new_dt = logger.change_datetime(data)
 
@@ -61,13 +69,13 @@ async def serveAPI(reader, writer):
 
     # Changement du nom de fichier
     elif request.find('/changefilename') == 6:
-        data = json.loads('{' + request.split('{')[1].split('}')[0] + '}')
+        data = parse_json(request_line)
 
         logger.change_file_name(data["name"])
     
     # Création du fichier
     elif request.find('/createfile') == 6:
-        data = json.loads('{' + request.split('{')[1].split('}')[0] + '}')
+        data = parse_json(request_line)
 
         try:
             logger.create_file(data["overwrite"])
@@ -112,7 +120,7 @@ async def serveAPI(reader, writer):
     # Supression fichier
     elif request.find("/deletefile") == 6:
 
-        filename: str = json.loads('{' + request.split('{')[1].split('}')[0] + '}')["filename"]
+        filename = parse_json(request_line)["filename"]
         
         # On vérifie:
         # Si le fichier qui va être supprimé n'est pas un script python
