@@ -4,7 +4,6 @@ from logger import Logger
 from mcp import mcp9600
 
 
-led = Pin(15, Pin.OUT)
 onboard = Pin("LED", Pin.OUT)
 mcp = mcp9600()
 
@@ -147,6 +146,11 @@ async def serveAPI(reader, writer):
     elif request.find("/self") == 6:
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
         writer.write(json.dumps({"name": ssid}))
+
+    elif request.find("/gettime"):
+        
+        writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
+        writer.write(json.dumps({"time": '-'.join([str(i) for i in logger.rtc.datetime()])}))
 
     # Si le client tente une requête dont l'adresse n'existe pas, on renvoie l'erreur 404
     else:

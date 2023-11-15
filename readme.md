@@ -89,3 +89,7 @@ Supprime un fichier du pico. Le nom du fichier doit être passé via l'argument 
 ##### /retrieve 
 
 Renvoie les informations contenues dans le fichier utilisées pour l'acquisition.
+
+##### /gettime
+
+Renvoie l'heure et la date du module RTC du pico.
