@@ -86,7 +86,7 @@ Renvoie la liste des fichiers présente sur le module pico.
 
 ##### /deletefile
 
-Supprime un fichier du pico. Le nom du fichier doit être passé via l'argument "filename". S'il y a un fichier de même nom déjà présent, l'argument overwrite doit être utilisé pour le supprimer au préalable. Sinon, une erreur sera renvoyée.
+Supprime un fichier du pico. Le nom du fichier doit être passé via l'argument "filename". Il y a des sécurtiés empêchant la supression d'un script, ou du fichier en cours d'utilisation.
 
 #### Acquisition des données
 

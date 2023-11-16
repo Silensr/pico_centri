@@ -183,7 +183,6 @@ async def main():
     # Cliegnottement de sécurité
     while True:
         onboard.on()
-        print("heartbeat")
         await asyncio.sleep(0.25)
         onboard.off()
         await asyncio.sleep(5)
