@@ -64,13 +64,29 @@ async def serveAPI(reader, writer):
 
     # Obtention des données de mesures
     elif request.find('/retrieve') == 6:
+        data = parse_json(request)
 
-        # Ramassage des miettes, pour transmettre le plus d'informations possibles sans erreurs de mémoire vive.
-        gc.collect()
+        if "index" not in data.keys() or "length" not in data.keys():
+            writer.write('HTTP/1.0 400 Bad Request\r\nContent-type: application/json\r\n\r\n')
+
+        else:
+            try:
+                gc.collect()
+
+                index, length = data['index'], data['length']
+                writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
+                writer.write(json.dumps({"data":logger.retrieve()[index:index+length]}))
+
+            except MemoryError:
+                writer.write('HTTP/1.0 500 Internal Server Errpr\r\nContent-type: application/json\r\n\r\n')
+                writer.write(json.dumps({"message": "Trop de données demandées"}))
+
+
+    elif request.find('/amount') == 6:
 
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-        writer.write(json.dumps({"data":logger.retrieve()}))
-
+        writer.write(json.dumps({"amount": len(logger.retrieve())}))
+        
     # Changement du nom de fichier
     elif request.find('/changefilename') == 6:
         data = parse_json(request)
