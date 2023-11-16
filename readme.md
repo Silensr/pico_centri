@@ -74,7 +74,7 @@ Donne le nom du fichier utilisé pour l'acquisition.
 
 ##### /changefilename
 
-Change le nom du fichier. Utilise le nom passé dans l'argument "new_name" pour le nom de fichier. S'il n'existe pas, il faut le créer avec la requête "/create_file"
+Change le nom du fichier. Utilise le nom passé dans l'argument "name" pour le nom de fichier. S'il n'existe pas, il faut le créer avec la requête "/create_file"
 
 ##### /createfile
 

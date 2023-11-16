@@ -1,4 +1,4 @@
-import network, json, os, asyncio
+import network, json, os, asyncio, gc
 from machine import Pin
 from logger import Logger
 from mcp import mcp9600
@@ -64,8 +64,12 @@ async def serveAPI(reader, writer):
 
     # Obtention des données de mesures
     elif request.find('/retrieve') == 6:
+
+        # Ramassage des miettes, pour transmettre le plus d'informations possibles sans erreurs de mémoire vive.
+        gc.collect()
+
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-        writer.write(json.dumps(logger.retrieve()))
+        writer.write(json.dumps({"data":logger.retrieve()}))
 
     # Changement du nom de fichier
     elif request.find('/changefilename') == 6:
