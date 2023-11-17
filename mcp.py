@@ -13,7 +13,7 @@ class mcp9600:
 
         # Si le test est négatif, on crée une erreur qui sera affichée dans la console.
         except:
-            raise TypeError("Device not found")
+            raise OSError("Device not found")
     
     # Lecture de la température de jonction chaude (registre 0x00)
     def get_hot(self):
