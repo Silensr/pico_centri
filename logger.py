@@ -74,7 +74,7 @@ class Logger:
     async def loop_measure(self):
         while True:
             self.addrow()
-            await asyncio.sleep(10)
+            await asyncio.sleep(15)
     
     # Démarrage de l'acqusition
     def begin(self):

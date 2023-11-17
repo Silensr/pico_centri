@@ -175,7 +175,7 @@ async def serveAPI(reader, writer):
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
         writer.write(json.dumps({"name": ssid}))
 
-    elif request.find("/gettime"):
+    elif request.find("/gettime") == 6:
         
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
         writer.write(json.dumps({"time": '-'.join([str(i) for i in logger.rtc.datetime()])}))
