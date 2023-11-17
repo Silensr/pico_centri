@@ -92,7 +92,7 @@ Supprime un fichier du pico. Le nom du fichier doit être passé via l'argument 
 
 ##### /retrieve 
 
-Renvoie les informations contenues dans le fichier utilisées pour l'acquisition. Il faut inclure dans le corps de la requête les champs "index", correponsant à la position de la première valeur demandée (commençant à partir de 0)
+Renvoie les informations contenues dans le fichier utilisées pour l'acquisition. Il faut inclure dans le corps de la requête les champs "index", correponsant à la position de la première valeur demandée (commençant à partir de 0), ainsi que "length", pour le nombre de données rapatriées.
 
 ##### /amount
 
