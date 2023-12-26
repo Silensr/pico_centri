@@ -69,6 +69,10 @@ async def serveAPI(reader, writer):
         if "index" not in data.keys() or "length" not in data.keys():
             writer.write('HTTP/1.0 400 Bad Request\r\nContent-type: application/json\r\n\r\n')
 
+        elif logger.working():
+            writer.write('HTTP/1.0 409 Conflict\r\nContent-type: application/json\r\n\r\n')
+            writer.write(json.dumps({"data": "Les données ne peuvent être récupérées qu'une fois l'acqusition terminée."}))
+
         else:
             try:
                 gc.collect()
@@ -80,6 +84,7 @@ async def serveAPI(reader, writer):
             except MemoryError:
                 writer.write('HTTP/1.0 500 Internal Server Errpr\r\nContent-type: application/json\r\n\r\n')
                 writer.write(json.dumps({"message": "Trop de données demandées"}))
+
 
 
     elif request.find('/amount') == 6:
@@ -199,6 +204,8 @@ async def main():
 
     # Mise en place du serveur
     asyncio.create_task(asyncio.start_server(serveAPI, '0.0.0.0', 80))
+
+    print("Ready!")
 
     # Cliegnottement de sécurité
     while True:
