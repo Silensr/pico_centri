@@ -54,21 +54,32 @@ class Logger:
         
 
     # Lis et renvoie les données contenue dans le fichier 
-    def retrieve(self):
+    def retrieve(self, index=0, length=2):
         try:
             f, t_dict = open(self.filename, "r"), []
         except: 
             raise FileNotFoundError
         
-        for i in f.readlines():
+        lines = f.readlines()[index:index+length]
+        f.close()
+        for i in lines:
             r: list[str] = i.split(';')
             t_dict.append({"temp": r[0], "timestamp": r[1].replace("\n", "")})
         
-        f.close()
 
         return t_dict
 
-    
+    def data_length(self):
+        try:
+            f = open(self.filename, "r")
+        except: 
+            raise FileNotFoundError
+        
+        length = len(f.readlines())
+        f.close()
+
+        return length
+
     # Méthodes de gestion de prise de la mesure.
     # Coroutine de prise des mesures.
     async def loop_measure(self):

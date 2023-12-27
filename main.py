@@ -62,6 +62,11 @@ async def serveAPI(reader, writer):
         writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
         writer.write(json.dumps({"time": '-'.join([str(i) for i in new_dt])}))
 
+    # Obtention du nombre de mesure présente dans un fichier:
+    elif request.find('/amount') == 6:
+        writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
+        writer.write(json.dumps({"amount": logger.data_length()}))
+
     # Obtention des données de mesures
     elif request.find('/retrieve') == 6:
         data = parse_json(request)
@@ -71,7 +76,7 @@ async def serveAPI(reader, writer):
 
         elif logger.working():
             writer.write('HTTP/1.0 409 Conflict\r\nContent-type: application/json\r\n\r\n')
-            writer.write(json.dumps({"data": "Les données ne peuvent être récupérées qu'une fois l'acqusition terminée."}))
+            writer.write(json.dumps({"data": "Les données ne peuvent être récupérées qu'une fois l'acqusition stopée."}))
 
         else:
             try:
@@ -79,18 +84,16 @@ async def serveAPI(reader, writer):
 
                 index, length = data['index'], data['length']
                 writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-                writer.write(json.dumps({"data":logger.retrieve()[index:index+length]}))
+                writer.write(json.dumps({"data":logger.retrieve(index,length)}))
 
+            except ValueError:
+                writer.write('HTTP/1.0 400 Bad Request\r\nContent-type: application/json\r\n\r\n')
+                writer.write(json.dumps({"message": "Index et longueurs trop grands !"}))
+                
             except MemoryError:
-                writer.write('HTTP/1.0 500 Internal Server Errpr\r\nContent-type: application/json\r\n\r\n')
+                writer.write('HTTP/1.0 500 Internal Server Error\r\nContent-type: application/json\r\n\r\n')
                 writer.write(json.dumps({"message": "Trop de données demandées"}))
 
-
-
-    elif request.find('/amount') == 6:
-
-        writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
-        writer.write(json.dumps({"amount": len(logger.retrieve())}))
         
     # Changement du nom de fichier
     elif request.find('/changefilename') == 6:
