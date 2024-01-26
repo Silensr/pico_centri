@@ -106,6 +106,8 @@ async def serveAPI(reader, writer):
         data = parse_json(request)
 
         try:
+            if "filename" in data.keys() :
+                logger.change_file_name(data["filename"])
             logger.create_file(data["overwrite"])
             
             writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
