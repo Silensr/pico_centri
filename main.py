@@ -100,6 +100,7 @@ async def serveAPI(reader, writer):
         data = parse_json(request)
 
         logger.change_file_name(data["name"])
+        writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
     
     # Création du fichier
     elif request.find('/createfile') == 6:
