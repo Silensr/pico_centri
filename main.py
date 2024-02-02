@@ -83,6 +83,8 @@ async def serveAPI(reader, writer):
                 gc.collect()
 
                 index, length = data['index'], data['length']
+                if length > 50:
+                    raise MemoryError
                 writer.write('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
                 writer.write(json.dumps({"data":logger.retrieve(index,length)}))
 
