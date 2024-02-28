@@ -1,4 +1,4 @@
-# Projet PicoCentri
+# Projet PicoThermo
 
 ## Description
 
